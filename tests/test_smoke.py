@@ -25,3 +25,11 @@ def test_search(tmp_path):
     ingest_demo(conn)
     rows = queries.search_chunks(conn, "租赁负债")
     assert rows, "expected at least one FTS hit"
+
+
+def test_reingest_no_duplicate(tmp_path):
+    conn = store.init_db(tmp_path / "test.db")
+    ingest_demo(conn)
+    ingest_demo(conn)
+    rows = queries.search_chunks(conn, "租赁负债")
+    assert len(rows) == 1

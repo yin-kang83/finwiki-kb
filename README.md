@@ -134,7 +134,7 @@ finwiki-kb/
 python -m finwiki_kb.cli init --db finwiki.db
 
 # 2 入库
-python -m finwiki_kb.cli ingest --db finwiki.db --docs ./docs
+python -m finwiki_kb.cli ingest --db finwiki.db --demo   # 真实 --docs 待实现
 
 # 3 检索
 python -m finwiki_kb.cli search --db finwiki.db --q "租赁负债初始计量"

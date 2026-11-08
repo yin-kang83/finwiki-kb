@@ -103,5 +103,6 @@ def add_chunk(
            VALUES (?,?,?,?,?,?,?,?)""",
         (chunk_id, node_id, text, span_start, span_end, version, None, len(text)),
     )
+    conn.execute("DELETE FROM chunks_fts WHERE chunk_id = ?", (chunk_id,))
     conn.execute("INSERT INTO chunks_fts (chunk_id, text) VALUES (?, ?)", (chunk_id, text))
     return chunk_id
