@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 
 from .graph import queries, store
+from .ingest import claims as claim_extract
 from .ingest import markdown
 
 
@@ -41,6 +42,9 @@ def main(argv: list[str] | None = None) -> int:
     p_search.add_argument("--q", required=True)
     p_search.add_argument("--limit", type=int, default=5)
 
+    p_ex = sub.add_parser("extract", help="extract candidate claims/evidence")
+    p_ex.add_argument("--db", required=True)
+
     p_ev = sub.add_parser("evidence", help="evidence chain")
     p_ev.add_argument("--db", required=True)
     p_ev.add_argument("--claim", required=True)
@@ -66,6 +70,11 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"  {s['doc']} sections={s['sections']} chunks={s['chunks']}")
         else:
             print("use --demo or --docs")
+        return 0
+    if args.cmd == "extract":
+        conn = store.init_db(args.db)
+        stats = claim_extract.extract_all(conn)
+        print(f"chunks={stats['chunks']} claims={stats['claims']}")
         return 0
     if args.cmd == "search":
         conn = store.init_db(args.db)

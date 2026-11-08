@@ -2,7 +2,7 @@
 
 **FinWiki Knowledge Base** — 文档图、证据图与向量索引的轻量知识库。
 
-> 状态：M1 骨架 + Markdown ingest；向量索引/claim 抽取未实现。
+> 状态：M1 骨架 + Markdown ingest + 候选 claim/evidence 抽取；向量索引未实现。
 > 定位：可定位、可回指、可复算的知识底座；不是“图=证明”，不是生产级审计系统。
 
 ## 为什么做
@@ -139,10 +139,13 @@ python -m finwiki_kb.cli ingest --db finwiki.db --docs ./docs
 # 3 检索
 python -m finwiki_kb.cli search --db finwiki.db --q "租赁负债初始计量"
 
-# 4 证据链
+# 4 抽候选 claim/evidence（规则式，带 span）
+python -m finwiki_kb.cli extract --db finwiki.db
+
+# 5 证据链
 python -m finwiki_kb.cli evidence --db finwiki.db --claim C001
 
-# 5 依赖
+# 6 依赖
 python -m finwiki_kb.cli deps --db finwiki.db --formula F001
 ```
 
@@ -180,6 +183,7 @@ M4 版本/增量/冲突检测
 ## 限制
 
 ```text
+claim/evidence 是规则式候选，不是完整语义抽取；
 图构建依赖人工/LLM，边可能有错；
 chunk 边界可能错；
 embedding 模型会漂移；
