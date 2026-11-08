@@ -1,0 +1,12 @@
+[project]
+name = "finwiki-kb"
+version = "0.0.1"
+description = "FinWiki Knowledge Base: document graph, evidence graph, and vector index"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+finwiki-kb = "finwiki_kb.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
