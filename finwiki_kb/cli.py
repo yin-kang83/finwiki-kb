@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 
 from .graph import queries, store
+from .ingest import markdown
 
 
 def ingest_demo(conn) -> None:
@@ -30,8 +31,9 @@ def main(argv: list[str] | None = None) -> int:
     p_init = sub.add_parser("init", help="create database")
     p_init.add_argument("--db", required=True)
 
-    p_ing = sub.add_parser("ingest", help="ingest demo document")
+    p_ing = sub.add_parser("ingest", help="ingest markdown or demo")
     p_ing.add_argument("--db", required=True)
+    p_ing.add_argument("--docs", help="markdown file or directory")
     p_ing.add_argument("--demo", action="store_true")
 
     p_search = sub.add_parser("search", help="FTS search")
@@ -57,8 +59,13 @@ def main(argv: list[str] | None = None) -> int:
         if args.demo:
             ingest_demo(conn)
             print("demo ingested")
+        elif args.docs:
+            stats = markdown.ingest_dir(conn, args.docs)
+            print(f"ingested {len(stats)} files")
+            for s in stats[:10]:
+                print(f"  {s['doc']} sections={s['sections']} chunks={s['chunks']}")
         else:
-            print("only --demo is implemented in MVP")
+            print("use --demo or --docs")
         return 0
     if args.cmd == "search":
         conn = store.init_db(args.db)

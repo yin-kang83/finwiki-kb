@@ -60,6 +60,12 @@ def add_edge(
     version: str | None = None,
     confidence: float | None = None,
 ) -> str:
+    row = conn.execute(
+        "SELECT id FROM edges WHERE src=? AND dst=? AND type=? LIMIT 1",
+        (src, dst, edge_type),
+    ).fetchone()
+    if row:
+        return row["id"]
     edge_id = f"E-{uuid.uuid4().hex[:12]}"
     conn.execute(
         """INSERT INTO edges (id,src,dst,type,source_span,version,confidence,created_at)
