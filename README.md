@@ -1,5 +1,8 @@
 # finwiki-kb
 
+> DOI: [10.5281/zenodo.24295151](https://doi.org/10.5281/zenodo.24295151)
+
+
 **FinWiki Knowledge Base** — 文档图、证据图与向量索引的轻量知识库。
 
 > 状态：M1 骨架 + Markdown ingest + 候选 claim/evidence 抽取；向量索引未实现。
